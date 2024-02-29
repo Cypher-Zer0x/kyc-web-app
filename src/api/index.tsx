@@ -17,6 +17,7 @@ export async function validateAddress(address: string): Promise<ValidateAddressR
         });
 
         // Renvoie la réponse de l'API
+        console.log('Response:', response.data.summary);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

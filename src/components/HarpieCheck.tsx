@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 import { validateAddress } from '../api';
 import { ValidateAddressResponse } from '../types';
-import { Button, TextField, Typography, Box, CircularProgress } from '@mui/material';
+import { Button, TextField, Typography, Box, CircularProgress, Chip } from '@mui/material';
 
 const HarpieCheck: React.FC = () => {
     const [address, setAddress] = useState('');
     const [result, setResult] = useState<ValidateAddressResponse | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [hasAttempted, setHasAttempted] = useState(false); // Ajout pour suivre si une tentative a été faite
+    const [hasAttempted, setHasAttempted] = useState(false);
 
     const handleValidateClick = async () => {
-        setResult(null); // Réinitialise le résultat précédent
-        setHasAttempted(false); // Réinitialise l'état de tentative
+        setResult(null);
+        setHasAttempted(false);
         setIsLoading(true);
         const response = await validateAddress(address);
         setResult(response);
-        setHasAttempted(true); // Marque qu'une tentative a été faite
+        setHasAttempted(true);
         setIsLoading(false);
+    };
+
+    // Fonction pour transformer les tags en éléments lisibles
+    const renderTags = (tags: ValidateAddressResponse['tags']) => {
+        return Object.entries(tags).filter(([_, value]) => value).map(([key]) => (
+            <Chip label={key} color="error" key={key} sx={{ mr: 1, mb: 1 }} />
+        ));
     };
 
     return (
@@ -62,17 +69,24 @@ const HarpieCheck: React.FC = () => {
                     'Verify'
                 )}
             </Button>
-            {result ? (
-                <Typography sx={{ color: result.isMaliciousAddress ? 'error.main' : 'success.main' }}>
-                    <b>{result.isMaliciousAddress ? '🛑You are not eligible' : '✨Awesome you are eligible!'}</b>
-                    <br></br>
-                    {result.summary}
-                </Typography>
-            ) : hasAttempted && !isLoading ? (
+            {result && (
+                <Box sx={{ mt: 2 }}>
+                    <Typography sx={{ color: result.isMaliciousAddress ? 'error.main' : 'success.main' }}>
+                        <b>{result.isMaliciousAddress ? '🛑You are not eligible' : '✨Awesome, you are eligible!'}</b>
+                        <br />
+                    </Typography>
+                    {result.isMaliciousAddress && (
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
+                            {renderTags(result.tags)}
+                        </Box>
+                    )}
+                </Box>
+            )}
+            {hasAttempted && !isLoading && !result && (
                 <Typography sx={{ color: 'error.main' }}>
                     An error occurred. Please try again.
                 </Typography>
-            ) : null}
+            )}
         </Box>
     );
 };

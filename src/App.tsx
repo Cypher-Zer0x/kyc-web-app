@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer'; 
 import logo from './assets/cypher_zero_logo.png';
 import NotFound from './pages/NotFound';
+import BackgroundCheck from './pages/BackgroundCheck';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './utils/Theme';
 
@@ -17,6 +18,7 @@ function App() {
         <div className="App-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/background-check" element={<BackgroundCheck />} />
             <Route path="*" element={<NotFound/>}/>
           </Routes>
         </div>

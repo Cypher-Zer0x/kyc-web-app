@@ -4,9 +4,10 @@ import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button'; // Importez Button de MUI
 
 interface NavbarProps {
-  logo: string; 
+  logo: string;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ logo }) => {
@@ -15,18 +16,16 @@ const Navbar: React.FC<NavbarProps> = ({ logo }) => {
 
   let logoStyles;
   if (isMobile) {
-    // Styles pour les petits écrans
     logoStyles = {
-      maxWidth: '15vw', // Taille maximale plus petite sur mobile
-      maxHeight: '8vh', // Limite inférieure pour que le logo ne soit pas trop petit
+      maxWidth: '15vw',
+      maxHeight: '8vh',
       marginRight: '2vh',
       marginLeft: '1vh',
       marginTop: '2vh',
       marginBottom: '2vh',
-      borderRadius: '50%', 
+      borderRadius: '50%',
     };
   } else {
-    // Styles pour les écrans plus grands
     logoStyles = {
       maxWidth: '20vw',
       maxHeight: '10vh',
@@ -34,20 +33,29 @@ const Navbar: React.FC<NavbarProps> = ({ logo }) => {
       marginLeft: '2vh',
       marginTop: '4vh',
       marginBottom: '4vh',
-      borderRadius: '50%', 
+      borderRadius: '50%',
     };
   }
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'rgba(18, 18, 18, 0.2)' }}> 
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link to="/">
-          <img 
-            src={logo} 
-            alt="Cypher Zer0x" 
-            style={logoStyles}
-          />
+    <AppBar position="static" sx={{ backgroundColor: 'rgba(18, 18, 18, 0.2)' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <img src={logo} alt="Cypher Zer0x" style={logoStyles} />
         </Link>
+        {/* Appliquez une bordure autour du lien Background Check */}
+        <Button
+          color="inherit"
+          component={Link}
+          to="/background-check"
+          sx={{
+            border: `1px solid ${theme.palette.primary.main}`, // Bordure violette
+            borderRadius: '4px', // Bordures arrondies
+            padding: '6px 16px', // Ajustement de l'espacement interne
+          }}
+        >
+          Background Check
+        </Button>
       </Toolbar>
     </AppBar>
   );
