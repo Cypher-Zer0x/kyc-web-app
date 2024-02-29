@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button'; // Importez Button de MUI
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Box from '@mui/material/Box'; // Importez Box de MUI
 
 interface NavbarProps {
   logo: string;
@@ -43,19 +45,34 @@ const Navbar: React.FC<NavbarProps> = ({ logo }) => {
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           <img src={logo} alt="Cypher Zer0x" style={logoStyles} />
         </Link>
-        {/* Appliquez une bordure autour du lien Background Check */}
+        {/* Group Buttons together to reduce spacing */}
+        <Box sx={{ display: 'flex', gap: theme.spacing(2), alignItems: 'center' }}>
         <Button
-          color="inherit"
-          component={Link}
-          to="/background-check"
-          sx={{
-            border: `1px solid ${theme.palette.primary.main}`, // Bordure violette
-            borderRadius: '4px', // Bordures arrondies
-            padding: '6px 16px', // Ajustement de l'espacement interne
-          }}
-        >
-          Background Check
-        </Button>
+            color="inherit"
+            component={Link}
+            to="/polygon-id-claim"
+            sx={{
+              border: `1px solid ${theme.palette.primary.main}`, // Bordure violette
+              borderRadius: '4px', // Bordures arrondies
+              padding: '6px 16px', // Ajustement de l'espacement interne
+            }}
+          >
+            Get KYC
+          </Button>
+          <Button
+            color="inherit"
+            component={Link}
+            to="/background-check"
+            sx={{
+              border: `1px solid ${theme.palette.primary.main}`, // Bordure violette
+              borderRadius: '4px', // Bordures arrondies
+              padding: '6px 16px', // Ajustement de l'espacement interne
+            }}
+          >
+            Background Check
+          </Button>
+          <ConnectButton />
+        </Box>
       </Toolbar>
     </AppBar>
   );

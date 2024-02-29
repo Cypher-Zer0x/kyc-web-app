@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import logo from './assets/cypher_zero_logo.png';
 import NotFound from './pages/NotFound';
 import BackgroundCheck from './pages/BackgroundCheck';
+import PolygonClaimID from './pages/PolygonIDClaim';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './utils/Theme';
 
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/background-check" element={<BackgroundCheck />} />
+            <Route path="/polygon-id-claim" element={<PolygonClaimID />} />
             <Route path="*" element={<NotFound/>}/>
           </Routes>
         </div>
