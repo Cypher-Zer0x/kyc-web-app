@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid } from '@mui/material';
 import { styled } from '@mui/system';
-
+import HarpieCheck from '../components/HarpieCheck';
 
 // Définir un composant de conteneur stylisé avec Emotion pour ajouter un espacement bas
 const SpacedContainer = styled(Container)(({ theme }) => ({
@@ -15,6 +15,9 @@ const HomePage: React.FC = () => {
       <h1>KYC WEB APP - Zer0x</h1>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
+          <SpacedContainer>
+            <HarpieCheck />
+          </SpacedContainer>
         </Grid>
         <Grid item xs={12} md={6}>
         </Grid>
