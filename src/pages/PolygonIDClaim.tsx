@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Button, Box, Typography, Stepper, Step, StepLabel, Paper, CircularProgress } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { validateAddress } from '../api'; // Assurez-vous que ce chemin est correct
-import { ValidateAddressResponse } from '../types'; // Assurez-vous que ce chemin est correct
+import { validateAddress } from '../api'; 
+import { ValidateAddressResponse } from '../types';
+import SubmitKYC from '../components/SubmitKYC';
 
 const steps = ['Connect Wallet', 'Background Check', 'Claim PolygonID Credential', 'Submit KYC'];
 
@@ -44,15 +44,15 @@ const PolygonClaimID: React.FC = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4, backgroundColor: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: "1000px", mx: 'auto' }}>
+    <Paper elevation={3} sx={{ p: 4, mt: 4, mb: 4, backgroundColor: 'white',borderRadius: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: "1000px", mx: 'auto' }}>
       <Typography variant="h4" sx={{ mb: 2, textAlign: 'center' }}>
-        KYC Process ✨
+      ✨ KYC Process ✨
       </Typography>
       
       {/* General description */}
       <Paper elevation={6} sx={{ p: 2, mb: 4, backgroundColor: '#f5f5f5', borderRadius: '15px', maxWidth: '80%', textAlign: 'center' }}>
         <Typography>
-          Why a KYC? We do not want Cypher Zer0x to be involved in fraudulent activities such as money laundering. To prevent this, we have implemented a whitelist system for each plasma contract specific to each network to regulate entries and exits. Moreover, addresses eligible for this whitelist are automatically subjected to a Background Check via Harpie to ensure that the address interacting with our protocol is not flagged as malicious/fraudulent.
+          <b>Why a KYC?</b> We do not want Cypher Zer0x to be involved in fraudulent activities such as money laundering.<br></br> To prevent this, we have implemented a whitelist system, using <b>PolygonID</b> stack, for each plasma contract specific to each network to regulate entries and exits. Moreover, addresses eligible for this whitelist are automatically subjected to a Background Check via <b>Harpie</b> to ensure that the address interacting with our protocol is not flagged as malicious/fraudulent.
         </Typography>
       </Paper>
       
@@ -108,9 +108,9 @@ const PolygonClaimID: React.FC = () => {
       )}
       
       {!isLoading && !isMaliciousAddress && activeStep === 3 && (
-        <Button variant="contained" component={Link} to="/submit-kyc" sx={{ mt: 2 }}>
-          ✅ Submit KYC on-chain
-        </Button>
+        <Box sx={{ mt: 4 }}>
+         <SubmitKYC />
+        </Box>
       )}
     </Paper>
   );
