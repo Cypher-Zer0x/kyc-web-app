@@ -20,7 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/background-check" element={<BackgroundCheck />} />
-            <Route path="/polygon-id-claim" element={<PolygonClaimID />} />
+            <Route path="/kyc-process" element={<PolygonClaimID />} />
             <Route path="*" element={<NotFound/>}/>
           </Routes>
         </div>

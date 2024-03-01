@@ -9,7 +9,7 @@ const steps = ['Connect Wallet', 'Background Check', 'Claim PolygonID Credential
 
 const stepDescriptions = [
   "🔗 You need to connect with your address and select the network you wish to be KYC'd on. This will allow you to enter and exit the protocol. You must go through the process for each network you are interested in.",
-  "🕵 We ensure that the address interacting with our protocol is not flagged as malicious/fraudulent tahnks to Harpie",
+  "🕵 We ensure that the address interacting with our protocol is not flagged as malicious/fraudulent thanks to Harpie",
   "🪪 Claim your PolygonID Credential via PolygonID's mobile or web wallet.",
   "✅ Submit your KYC proof to the plasma contract, and you're all set!"
 ];
@@ -97,7 +97,7 @@ const PolygonClaimID: React.FC = () => {
         <Button
           variant="contained"
           component="a"
-          href="https://issuer-ui.polygonid.me/credentials/scan-link/32fa5c8c-8ae7-44ea-9813-ee6e14c50d45"
+          href="https://issuer-ui.polygonid.me/credentials/scan-link/e74da677-4618-499c-8c73-bb1f35977a35"
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClaimCredentialClick}

@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ logo }) => {
         <Button
             color="inherit"
             component={Link}
-            to="/polygon-id-claim"
+            to="/kyc-process"
             sx={{
               border: `1px solid ${theme.palette.primary.main}`, // Bordure violette
               borderRadius: '4px', // Bordures arrondies

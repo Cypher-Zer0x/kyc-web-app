@@ -2,20 +2,21 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Mumbai_QR_Code from "../assets/QR_codes/mumbai_verif_qrcode.png";
+import NoNeed_QR_Code from "../assets/QR_codes/no_need_qr_code.png";
 
 // Définir qrCodesByNetwork comme un Record<number, string>
 const qrCodesByNetwork: Record<number, string> = {
-  48899 : 'url_to_zircuit_testnet_qr_code.png', // Zircuit Testnet
-  2525 : 'url_to_injective_testnet_qr_code.png', // Injective Testnet
-  9090 : 'url_to_inco_gentry_testnet_qr_code.png', // Inco Gentry Testnet
+  48899 : NoNeed_QR_Code, // Zircuit Testnet
+  2525 : NoNeed_QR_Code, // Injective Testnet
+  9090 : NoNeed_QR_Code, // Inco Gentry Testnet
   80001 : Mumbai_QR_Code, // Mumbai Testnet
-  11155111 : 'url_to_sepolia_qr_code.png', // Sepolia
-  59140 : 'url_to_linea_testnet_qr_code.png', // Linea Testnet
-  1313161555 : 'url_to_aurora_testnet_qr_code.png', // Aurora Testnet
-  51 : 'url_to_xdc_testnet_qr_code.png', // XDC Testnet
-  23295 : 'url_to_oasis_testnet_qr_code.png', // Oasis Testnet
-  296 : 'url_to_hedera_testnet_qr_code.png', // Hedera Testnet
-  1287 : 'url_to_moonbase_alpha_qr_code.png', // Moonbase Alpha
+  11155111 : NoNeed_QR_Code, // Sepolia
+  59140 : NoNeed_QR_Code, // Linea Testnet
+  1313161555 : NoNeed_QR_Code, // Aurora Testnet
+  51 : NoNeed_QR_Code, // XDC Testnet
+  23295 : NoNeed_QR_Code, // Oasis Testnet
+  296 : NoNeed_QR_Code, // Hedera Testnet
+  1287 : NoNeed_QR_Code, // Moonbase Alpha
 };
 
 const SubmitKYC: React.FC = () => {
