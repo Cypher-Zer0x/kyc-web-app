@@ -2,23 +2,6 @@ import React, { useEffect } from 'react';
 import { Container, Grid, Typography, Paper, Button, Divider, Box } from '@mui/material';
 import detectEthereumProvider from '@metamask/detect-provider';
 
-// detect if cypher-zer0x snap is installed
-const detectSnap = async () => {
-  const provider: any = await detectEthereumProvider();
-  const snaps = await provider?.request({
-    method: 'wallet_getSnaps'
-  });
-
-  const isMySnapInstalled = Object.keys(snaps).includes('npm:cypher-zer0x');
-
-  if (isMySnapInstalled) {
-    console.log('Super Snap is installed');
-    return true;
-  } else {
-    console.log('Super Snap is not installed');
-    return false
-  }
-}
 
 const handleSnapConnect = async () => {
   // This resolves to the value of window.ethereum or null
