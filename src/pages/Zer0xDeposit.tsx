@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Grid, Paper, Box, Typography, TextField, Button, Chip } from '@mui/material';
 import { useAccount, useWriteContract } from 'wagmi';
 import detectEthereumProvider from '@metamask/detect-provider';
+import Web3 from 'web3';
 const ContractABI = require('../abi/Plasma.json');
 const ContractABIPolygon = require('../abi/PlasmaPolygon.json');
 
@@ -27,7 +28,7 @@ const Zer0xDeposit = () => {
       return false
     }
   }
-  
+
 
   const plasmaContractAddress: Record<number, string> = {
     48899: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Zircuit Testnet
@@ -41,26 +42,26 @@ const Zer0xDeposit = () => {
   };
 
   const { data: hash, writeContract, isPending } = useWriteContract()
-  if(!detectSnap()) {
+  if (!detectSnap()) {
     return (
-        <Grid item xs={12} sx={{ mt: 4, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-            <Paper elevation={3} sx={{ p: 4, backgroundColor: 'lightblue', borderRadius: '15px' }}>
-              <Typography variant="h6" gutterBottom component="div">
-                <b>Install Metamask Flask !</b>
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                To enhance your experience and security, our platform leverages MetaMask Snaps. This feature allows you to interact directly with our blockchain services securely from your MetaMask wallet. Below, you can download MetaMask Flask for Chrome or Firefox to get started.
-              </Typography>
-              <Box display="flex" flexDirection="row" justifyContent="space-between" gap={2}>
-                <Button variant="contained" color="primary" component="a" href="https://output.circle-artifacts.com/output/job/b2655d8e-a903-4649-8cb2-eb6fa8b54cea/artifacts/0/builds-flask/metamask-flask-chrome-11.10.0-flask.0.zip" download="metamask-flask-chrome-11.10.0-flask.0.zip">⬇️ Install MetaMask Snap for Chrome</Button>
-                <Button variant="contained" color="secondary" component="a" href="https://output.circle-artifacts.com/output/job/b2655d8e-a903-4649-8cb2-eb6fa8b54cea/artifacts/0/builds-flask/metamask-flask-firefox-11.10.0-flask.0.zip" download="metamask-flask-firefox-11.10.0-flask.0.zip">⬇️ Install MetaMask Snap for Firefox</Button>
-              </Box>
-              <Typography variant="body2" sx={{ mt: 2 }}>
-                <b>For Google Chrome:</b> unzip the file, then follow <a href='https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=fr#load-unpacked'>these steps.</a><br />
-                <b>For Mozilla Firefox:</b> unzip the file, navigate to the directory, then follow <a href='https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#trying_it_out'>these steps.</a>
-              </Typography>
-            </Paper>
-          </Grid>
+      <Grid item xs={12} sx={{ mt: 4, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+        <Paper elevation={3} sx={{ p: 4, backgroundColor: 'lightblue', borderRadius: '15px' }}>
+          <Typography variant="h6" gutterBottom component="div">
+            <b>Install Metamask Flask !</b>
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            To enhance your experience and security, our platform leverages MetaMask Snaps. This feature allows you to interact directly with our blockchain services securely from your MetaMask wallet. Below, you can download MetaMask Flask for Chrome or Firefox to get started.
+          </Typography>
+          <Box display="flex" flexDirection="row" justifyContent="space-between" gap={2}>
+            <Button variant="contained" color="primary" component="a" href="https://output.circle-artifacts.com/output/job/b2655d8e-a903-4649-8cb2-eb6fa8b54cea/artifacts/0/builds-flask/metamask-flask-chrome-11.10.0-flask.0.zip" download="metamask-flask-chrome-11.10.0-flask.0.zip">⬇️ Install MetaMask Snap for Chrome</Button>
+            <Button variant="contained" color="secondary" component="a" href="https://output.circle-artifacts.com/output/job/b2655d8e-a903-4649-8cb2-eb6fa8b54cea/artifacts/0/builds-flask/metamask-flask-firefox-11.10.0-flask.0.zip" download="metamask-flask-firefox-11.10.0-flask.0.zip">⬇️ Install MetaMask Snap for Firefox</Button>
+          </Box>
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            <b>For Google Chrome:</b> unzip the file, then follow <a href='https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world?hl=fr#load-unpacked'>these steps.</a><br />
+            <b>For Mozilla Firefox:</b> unzip the file, navigate to the directory, then follow <a href='https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#trying_it_out'>these steps.</a>
+          </Typography>
+        </Paper>
+      </Grid>
     );
   }
   if (!isConnected) {
@@ -86,7 +87,7 @@ const Zer0xDeposit = () => {
   }
 
   const currentPlasmaContractAddress = chain?.id ? plasmaContractAddress[chain.id] as String : 'No Plasma Contract Address Found for this Chain!';
-  
+
   // get deposit data from cypher-zer0x snap (rG + pubkey)
   const getDepositDataFromSnap = async () => {
     if (await detectSnap()) {
@@ -121,11 +122,33 @@ const Zer0xDeposit = () => {
     console.log('abi', abi);
     if (currentPlasmaContractAddress !== 'No Plasma Contract Address Found for this Chain!') {
       console.log('writing contract');
-      const result = await writeContract({
-        address: currentPlasmaContractAddress as `0x${string}`,
-        abi,
-        functionName: 'deposit',
-        args: [depositData!.rG, depositData!.pubkey],
+      // const result = await writeContract({
+      //   address: currentPlasmaContractAddress as `0x${string}`,
+      //   abi,
+      //   functionName: 'deposit',
+      //   args: [depositData!.rG, depositData!.pubkey],
+      // });
+      const web3 = new Web3(window.ethereum);
+      // interact with teh deposit function from currentPlasmaContractAddress
+      const result = await web3.eth.sendTransaction({
+        to: currentPlasmaContractAddress as string,
+        from: window.ethereum.selectedAddress,
+        gas: 6000000, // Increase gas limit
+        value: web3.utils.toWei(amount, 'ether'),
+        data: web3.eth.abi.encodeFunctionCall({
+          name: 'deposit',
+          type: 'function',
+          inputs: [
+            {
+              type: 'string',
+              name: 'rG'
+            },
+            {
+              type: 'string',
+              name: 'pubkey'
+            }
+          ]
+        }, [depositData!.rG, depositData!.pubkey])
       });
       console.log('result', result);
     }
