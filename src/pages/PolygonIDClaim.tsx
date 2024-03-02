@@ -97,7 +97,7 @@ const PolygonClaimID: React.FC = () => {
         <Button
           variant="contained"
           component="a"
-          href="https://issuer-ui.polygonid.me/credentials/scan-link/e74da677-4618-499c-8c73-bb1f35977a35"
+          href="https://issuer-ui.polygonid.me/credentials/scan-link/09ff2857-d54a-4732-b7cd-f2e9f21e2b6d"
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClaimCredentialClick}

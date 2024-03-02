@@ -7,6 +7,17 @@ Cypher Zer0x App : [app.zer0x.xyz](https://app.zer0x.xyz/)
 
 For the KYC process we combined [HARPIE](https://harpie.io/) stack with [PolygonID](https://polygonid.com/) to issue credentials only for users with valid address (addresses that are not linked to any malicious/fraudulous actvivity).  
 
+## PolygonID :
+Shema:  
+```
+https://schema-builder.polygonid.me/schemas/0aa7a0c2-0282-4856-9f75-e1ea5054b70f
+```
+
+Issue Credentials:  
+```
+https://issuer-ui.polygonid.me/credentials/issue
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
