@@ -7,6 +7,7 @@ import logo from './assets/cypher_zero_logo.png';
 import NotFound from './pages/NotFound';
 import BackgroundCheck from './pages/BackgroundCheck';
 import PolygonClaimID from './pages/PolygonIDClaim';
+import Zer0xDeposit from './pages/Zer0xDeposit';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './utils/Theme';
 
@@ -19,6 +20,7 @@ function App() {
         <div className="App-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/zer0x-deposit" element={<Zer0xDeposit />} />
             <Route path="/background-check" element={<BackgroundCheck />} />
             <Route path="/kyc-process" element={<PolygonClaimID />} />
             <Route path="*" element={<NotFound/>}/>

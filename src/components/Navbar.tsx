@@ -45,8 +45,19 @@ const Navbar: React.FC<NavbarProps> = ({ logo }) => {
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           <img src={logo} alt="Cypher Zer0x" style={logoStyles} />
         </Link>
-        {/* Group Buttons together to reduce spacing */}
         <Box sx={{ display: 'flex', gap: theme.spacing(2), alignItems: 'center' }}>
+        <Button
+            color="inherit"
+            component={Link}
+            to="/zer0x-deposit"
+            sx={{
+              border: `1px solid ${theme.palette.primary.main}`, // Bordure violette
+              borderRadius: '4px', // Bordures arrondies
+              padding: '6px 16px', // Ajustement de l'espacement interne
+            }}
+          >
+            Enter Cypher Zer0x
+          </Button>
         <Button
             color="inherit"
             component={Link}

@@ -3,7 +3,7 @@
 ## Deployed Demo App  
 
 You can interact with the App in order to perform KYC and chains interactions by visiting 
-Cypher Zer0x App : [kyc.zer0x.xyz](https://kyc.zer0x.xyz/)  
+Cypher Zer0x App : [app.zer0x.xyz](https://app.zer0x.xyz/)  
 
 For the KYC process we combined [HARPIE](https://harpie.io/) stack with [PolygonID](https://polygonid.com/) to issue credentials only for users with valid address (addresses that are not linked to any malicious/fraudulous actvivity).  
 
