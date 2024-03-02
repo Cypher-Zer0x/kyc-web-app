@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container, Grid, Paper, Box, Typography, TextField, Button, Chip } from '@mui/material';
 import { useAccount, useWriteContract } from 'wagmi';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -11,14 +11,14 @@ const Zer0xDeposit = () => {
   const [amount, setAmount] = useState("0");
 
   const plasmaContractAddress: Record<number, string> = {
-    48899 : "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Zircuit Testnet
-    80001 : "0xF43a5fCa550a8b04252ADd7520caEd8dde85e449", // Mumbai Testnet
-    11155111 : "0xF43a5fCa550a8b04252ADd7520caEd8dde85e449", // Sepolia
-    59140 : "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Linea Testnet
-    1313161555 : "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Aurora Testnet
-    51 : "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // XDC Testnet
-    23295 : "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Oasis Testnet
-    296 : "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Hedera Testnet
+    48899: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Zircuit Testnet
+    80001: "0xF43a5fCa550a8b04252ADd7520caEd8dde85e449", // Mumbai Testnet
+    11155111: "0xF43a5fCa550a8b04252ADd7520caEd8dde85e449", // Sepolia
+    59140: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Linea Testnet
+    1313161555: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Aurora Testnet
+    51: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // XDC Testnet
+    23295: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Oasis Testnet
+    296: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Hedera Testnet
   };
 
   const { data: hash, writeContract, isPending } = useWriteContract()
@@ -83,27 +83,29 @@ const Zer0xDeposit = () => {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     console.log('submitting');
     const depositData = await getDepositDataFromSnap();
-    console.log('depositData', depositData);
+    // console.log('depositData', depositData);
     var abi = ContractABI;
     if (chain?.id === 80001) {
       abi = ContractABIPolygon;
     }
-    var amount = (event.currentTarget[0] as HTMLInputElement).value;
     console.log('amount', amount);
     console.log('currentPlasmaContractAddress', currentPlasmaContractAddress);
     console.log("depositData!.rG", depositData!.rG);
     console.log("depositData!.pubkey", depositData!.pubkey);
     console.log('abi', abi);
-    writeContract({
-      address: currentPlasmaContractAddress as `0x${string}`,
-      abi,
-      functionName: 'deposit',
-      args: [depositData!.rG, depositData!.pubkey],
-    });
+    if (currentPlasmaContractAddress !== 'No Plasma Contract Address Found for this Chain!') {
+      console.log('writing contract');
+      const result = await writeContract({
+        address: currentPlasmaContractAddress as `0x${string}`,
+        abi,
+        functionName: 'deposit',
+        args: [depositData!.rG, depositData!.pubkey],
+      });
+      console.log('result', result);
+    }
   };
 
   return (
@@ -118,40 +120,40 @@ const Zer0xDeposit = () => {
               <Chip label={`Current Chain: ${chain.name}`} color="primary" sx={{ my: 2 }} />
             )}
             <Typography variant="body1" sx={{ my: 2 }}>
-              Before proceeding with your deposit, ensure that your wallet is connected to the correct chain as indicated above. 
+              Before proceeding with your deposit, ensure that your wallet is connected to the correct chain as indicated above.
               The deposit will be executed on the current chain's Plasma contract address. Always verify the address,
               according to our documentation,and the amount before submitting.
               <br></br>
               <br></br>
               {chain?.id === 80001 && (
-              <Box sx={{ border: '1px solid #7B1FA2', p: 2, borderRadius: '4px', mt: 2 }}>
-                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                  You are on Polygon Mumbai, ensure that you have submitted your KYC first.
-                </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                  <Button variant="contained" color="primary" href="/kyc-process" sx={{ textTransform: 'none' }}>
-                    🕵 Start KYC Process
-                  </Button>
+                <Box sx={{ border: '1px solid #7B1FA2', p: 2, borderRadius: '4px', mt: 2 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    You are on Polygon Mumbai, ensure that you have submitted your KYC first.
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                    <Button variant="contained" color="primary" href="/kyc-process" sx={{ textTransform: 'none' }}>
+                      🕵 Start KYC Process
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
-            )}
+              )}
             </Typography>
-            <form onSubmit={handleSubmit} style={{ marginTop: '20px', textAlign: 'center' }}>
-              <TextField
-                label="Amount"
-                variant="outlined"
-                type="float"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                fullWidth
-                required
-                style={{ marginBottom: '20px' }}
-                disabled={isPending}
-              />
-              <Button variant="contained" color="primary" type="submit" disabled={isPending}>
-                {isPending ? 'Confirming...' : 'Deposit'} 
-              </Button>
-            </form>
+            {/* <form onSubmit={handleSubmit} style={{ marginTop: '20px', textAlign: 'center' }}> */}
+            <TextField
+              label="Amount"
+              variant="outlined"
+              type="float"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              fullWidth
+              required
+              style={{ marginBottom: '20px' }}
+              disabled={isPending}
+            />
+            <Button variant="contained" color="primary" type="submit" disabled={isPending} onClick={handleSubmit}>
+              {isPending ? 'Confirming...' : 'Deposit'}
+            </Button>
+            {/* </form> */}
             <Box sx={{ border: '1px solid #7B1FA2', p: 2, borderRadius: '4px', mt: 2 }}>
               <Typography variant="body2" >
                 <b>Current Plasma Contract Address: {currentPlasmaContractAddress}</b>
