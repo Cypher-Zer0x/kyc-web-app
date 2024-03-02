@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Grid, Paper, Box, Typography, TextField, Button, Chip } from '@mui/material';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 import detectEthereumProvider from '@metamask/detect-provider';
 import Web3 from 'web3';
 const ContractABI = require('../abi/Plasma.json');
@@ -10,6 +10,7 @@ const Zer0xDeposit = () => {
   const { isConnected } = useAccount();
   const { chain } = useAccount();
   const [amount, setAmount] = useState("0");
+  const [hash, setHash] = useState("");
 
   // detect if cypher-zer0x snap is installed
   const detectSnap = async () => {
@@ -31,17 +32,16 @@ const Zer0xDeposit = () => {
 
 
   const plasmaContractAddress: Record<number, string> = {
-    48899: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Zircuit Testnet
-    80001: "0xF43a5fCa550a8b04252ADd7520caEd8dde85e449", // Mumbai Testnet
-    11155111: "0xF43a5fCa550a8b04252ADd7520caEd8dde85e449", // Sepolia
-    59140: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Linea Testnet
-    1313161555: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Aurora Testnet
-    51: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // XDC Testnet
-    23295: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Oasis Testnet
-    296: "0xBFA33B098a0904e362eFf7850C63d30cbd2Ff797", // Hedera Testnet
+    48899 : "0x991a0FAeE936aDDba6b444C48Ad1c8Ec04D9a208", // Zircuit Testnet
+    80001 : "0xcbe5f301853d365c0B311AB331f56AAC0d39d6b0", // Mumbai Testnet
+    11155111 : "0x8DbDf7A6008531ED1fB301D4d61C0a883Ae0FA0b", // Sepolia
+    59140 : "0x991a0FAeE936aDDba6b444C48Ad1c8Ec04D9a208", // Linea Testnet
+    1313161555 : "0x991a0FAeE936aDDba6b444C48Ad1c8Ec04D9a208", // Aurora Testnet
+    51 : "0x991a0FAeE936aDDba6b444C48Ad1c8Ec04D9a208", // XDC Testnet
+    23295 : "0x991a0FAeE936aDDba6b444C48Ad1c8Ec04D9a208", // Oasis Testnet
+    296 : "0x991a0FAeE936aDDba6b444C48Ad1c8Ec04D9a208", // Hedera Testnet
   };
 
-  const { data: hash, writeContract, isPending } = useWriteContract()
   if (!detectSnap()) {
     return (
       <Grid item xs={12} sx={{ mt: 4, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
@@ -157,14 +157,7 @@ const Zer0xDeposit = () => {
       console.log('abi', abi);
       if (currentPlasmaContractAddress !== 'No Plasma Contract Address Found for this Chain!') {
         console.log('writing contract');
-        // const result = await writeContract({
-        //   address: currentPlasmaContractAddress as `0x${string}`,
-        //   abi,
-        //   functionName: 'deposit',
-        //   args: [depositData!.rG, depositData!.pubkey],
-        // });
         const web3 = new Web3(window.ethereum);
-        // interact with teh deposit function from currentPlasmaContractAddress
         const result = await web3.eth.sendTransaction({
           to: currentPlasmaContractAddress as string,
           from: window.ethereum.selectedAddress,
@@ -186,9 +179,12 @@ const Zer0xDeposit = () => {
           }, [depositData!.rG, depositData!.pubkey])
         });
         console.log('result', result);
+        setHash(String(result.transactionHash));
+        
       }
     } catch (error) {
       console.error('Error while submitting deposit:', error);
+      setHash('Error while submitting deposit');
     }
   };
 
@@ -222,22 +218,25 @@ const Zer0xDeposit = () => {
                 </Box>
               )}
             </Typography>
-            {/* <form onSubmit={handleSubmit} style={{ marginTop: '20px', textAlign: 'center' }}> */}
             <TextField
               label="Amount"
               variant="outlined"
-              type="float"
+              type="text"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                const formattedValue = inputValue.replace(',', '.').replace(/[^0-9.]/g, ''); // Remplacer les virgules par des points et supprimer les caractères non numériques
+                setAmount(formattedValue);
+              }}
               fullWidth
               required
               style={{ marginBottom: '20px' }}
-              disabled={isPending}
             />
-            <Button variant="contained" color="primary" type="submit" disabled={isPending} onClick={handleSubmit}>
-              {isPending ? 'Confirming...' : 'Deposit'}
+
+
+            <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
+              Deposit
             </Button>
-            {/* </form> */}
             <Box sx={{ border: '1px solid #7B1FA2', p: 2, borderRadius: '4px', mt: 2 }}>
               <Typography variant="body2" >
                 <b>Current Plasma Contract Address: {currentPlasmaContractAddress}</b>
