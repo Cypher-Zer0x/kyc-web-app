@@ -7,8 +7,6 @@ import NoNeed_QR_Code from "../assets/QR_codes/no_need_qr_code.png";
 // Définir qrCodesByNetwork comme un Record<number, string>
 const qrCodesByNetwork: Record<number, string> = {
   48899 : NoNeed_QR_Code, // Zircuit Testnet
-  2525 : NoNeed_QR_Code, // Injective Testnet
-  9090 : NoNeed_QR_Code, // Inco Gentry Testnet
   80001 : Mumbai_QR_Code, // Mumbai Testnet
   11155111 : NoNeed_QR_Code, // Sepolia
   59140 : NoNeed_QR_Code, // Linea Testnet
@@ -16,7 +14,6 @@ const qrCodesByNetwork: Record<number, string> = {
   51 : NoNeed_QR_Code, // XDC Testnet
   23295 : NoNeed_QR_Code, // Oasis Testnet
   296 : NoNeed_QR_Code, // Hedera Testnet
-  1287 : NoNeed_QR_Code, // Moonbase Alpha
 };
 
 const SubmitKYC: React.FC = () => {

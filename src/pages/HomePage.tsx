@@ -20,25 +20,6 @@ const detectSnap = async () => {
   }
 }
 
-// get deposit data from cypher-zer0x snap (rG + pubkey)
-const getDepositDataFromSnap = async () => {
-  if (await detectSnap()) {
-    const depositData = await window.ethereum.request({
-      "method": "wallet_invokeSnap",
-      "params": {
-        "snapId": "npm:cypher-zer0x",
-        "request": {
-          "method": "zer0x-deposit-payload"
-        }
-      }
-    });
-
-    console.log('Deposit Data:', depositData);
-
-    return depositData as { rG: string, pubkey: string };
-  }
-}
-
 const handleSnapConnect = async () => {
   // This resolves to the value of window.ethereum or null
   const provider: any = await detectEthereumProvider();
@@ -49,7 +30,6 @@ const handleSnapConnect = async () => {
   )?.includes('flask');
 
   if (provider && isFlask) {
-    console.log('MetaMask Flask successfully detected!');
 
     // call zer0x-deposit-payload
     const payload = await window.ethereum.request({
@@ -58,7 +38,7 @@ const handleSnapConnect = async () => {
         "npm:cypher-zer0x": {},
       }
     });
-    console.log('Payload:', payload);
+    alert('MetaMask Flask & Cypher Zer0x SNAP successfully detected!');
   } else {
     alert('Please install MetaMask flask first');
   }
@@ -121,7 +101,7 @@ const HomePage: React.FC = () => {
                 <b>For Mozilla Firefox:</b> unzip the file, navigate to the directory, then follow <a href='https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#trying_it_out'>these steps.</a>
               </Typography>
               <Box display="flex" flexDirection="row" justifyContent="center" gap={1} marginTop={"20px"}>
-                <Button variant="contained" onClick={handleSnapConnect}>🦊 Connect/verify SNAP</Button>
+                <Button variant="contained" onClick={handleSnapConnect}>🦊 Install/Verify Cypher Zer0x SNAP</Button>
               </Box>
             </Paper>
           </Grid>

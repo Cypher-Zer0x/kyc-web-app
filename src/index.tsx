@@ -35,32 +35,12 @@ const zircuit={
   }
 }
 
-const injective = {
-  id: 2525,
-  name: 'Injective Testnet',
-  iconBackground: '#fff',
-  nativeCurrency: { name: 'Ethereum', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    default: { http: ['https://inevm.calderachain.xyz/http'] },
-  }
-}
-
-const inco = {
-  id: 9090,
-  name: 'Inco Gentry Testnet',
-  iconBackground: '#fff',
-  nativeCurrency: { name: 'INCO', symbol: 'INCO', decimals: 18 },
-  rpcUrls: {
-    default: { http: ['https://testnet.inco.org'] },
-  }
-}
-
 
 const config = getDefaultConfig({
   appName: 'My RainbowKit App',
   projectId: 'YOUR_PROJECT_ID',
-  chains: [mumbai, sepolia, lineaTestnet, auroraTestnet, xdcTestnet, oasisTestnet, hederaTestnet, moonbaseAlpha, zircuit, injective, inco],
-  ssr: true, // If your dApp uses server side rendering (SSR)
+  chains: [mumbai, sepolia, lineaTestnet, auroraTestnet, xdcTestnet, oasisTestnet, hederaTestnet, moonbaseAlpha, zircuit],
+  ssr: true, 
 });
 
 const queryClient = new QueryClient();
