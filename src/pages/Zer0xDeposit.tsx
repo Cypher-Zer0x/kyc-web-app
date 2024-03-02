@@ -21,10 +21,10 @@ const Zer0xDeposit = () => {
     const isMySnapInstalled = Object.keys(snaps).includes('npm:cypher-zer0x');
 
     if (isMySnapInstalled) {
-      console.log('Super Snap is installed');
+      console.log('Cypher Zer0x Snap is installed');
       return true;
     } else {
-      console.log('Super Snap is not installed');
+      console.log('Cypher Zer0x Snap is not installed');
       return false
     }
   }
@@ -107,50 +107,88 @@ const Zer0xDeposit = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    console.log('submitting');
-    const depositData = await getDepositDataFromSnap();
-    // console.log('depositData', depositData);
-    var abi = ContractABI;
-    if (chain?.id === 80001) {
-      abi = ContractABIPolygon;
+  const handleSnapConnect = async () => {
+    // This resolves to the value of window.ethereum or null
+    const provider: any = await detectEthereumProvider();
+  
+    // web3_clientVersion returns the installed MetaMask version as a string
+    const isFlask = (
+      await provider?.request({ method: 'web3_clientVersion' })
+    )?.includes('flask');
+  
+    if (provider && isFlask) {
+  
+      try {
+        // call zer0x-deposit-payload
+        const payload = await window.ethereum.request({
+          "method": "wallet_requestSnaps",
+          "params": {
+            "npm:cypher-zer0x": {},
+          }
+        });
+        alert('MetaMask Flask & Cypher Zer0x SNAP successfully detected!');
+      } catch (error) {
+        console.error('Error while installing Cypher Zer0x SNAP');
+      }
+    } else {
+      alert('Please install MetaMask flask first');
     }
-    console.log('amount', amount);
-    console.log('currentPlasmaContractAddress', currentPlasmaContractAddress);
-    console.log("depositData!.rG", depositData!.rG);
-    console.log("depositData!.pubkey", depositData!.pubkey);
-    console.log('abi', abi);
-    if (currentPlasmaContractAddress !== 'No Plasma Contract Address Found for this Chain!') {
-      console.log('writing contract');
-      // const result = await writeContract({
-      //   address: currentPlasmaContractAddress as `0x${string}`,
-      //   abi,
-      //   functionName: 'deposit',
-      //   args: [depositData!.rG, depositData!.pubkey],
-      // });
-      const web3 = new Web3(window.ethereum);
-      // interact with teh deposit function from currentPlasmaContractAddress
-      const result = await web3.eth.sendTransaction({
-        to: currentPlasmaContractAddress as string,
-        from: window.ethereum.selectedAddress,
-        gas: 6000000, // Increase gas limit
-        value: web3.utils.toWei(amount, 'ether'),
-        data: web3.eth.abi.encodeFunctionCall({
-          name: 'deposit',
-          type: 'function',
-          inputs: [
-            {
-              type: 'string',
-              name: 'rG'
-            },
-            {
-              type: 'string',
-              name: 'pubkey'
-            }
-          ]
-        }, [depositData!.rG, depositData!.pubkey])
-      });
-      console.log('result', result);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!await getDepositDataFromSnap()) {
+        alert('Please install MetaMask flask the Cypher Zer0x snap first');
+        await handleSnapConnect();
+        return;
+      }
+      console.log('submitting');
+      const depositData = await getDepositDataFromSnap();
+
+      // console.log('depositData', depositData);
+      var abi = ContractABI;
+      if (chain?.id === 80001) {
+        abi = ContractABIPolygon;
+      }
+      console.log('amount', amount);
+      console.log('currentPlasmaContractAddress', currentPlasmaContractAddress);
+      console.log("depositData!.rG", depositData!.rG);
+      console.log("depositData!.pubkey", depositData!.pubkey);
+      console.log('abi', abi);
+      if (currentPlasmaContractAddress !== 'No Plasma Contract Address Found for this Chain!') {
+        console.log('writing contract');
+        // const result = await writeContract({
+        //   address: currentPlasmaContractAddress as `0x${string}`,
+        //   abi,
+        //   functionName: 'deposit',
+        //   args: [depositData!.rG, depositData!.pubkey],
+        // });
+        const web3 = new Web3(window.ethereum);
+        // interact with teh deposit function from currentPlasmaContractAddress
+        const result = await web3.eth.sendTransaction({
+          to: currentPlasmaContractAddress as string,
+          from: window.ethereum.selectedAddress,
+          gas: 6000000, // Increase gas limit
+          value: web3.utils.toWei(amount, 'ether'),
+          data: web3.eth.abi.encodeFunctionCall({
+            name: 'deposit',
+            type: 'function',
+            inputs: [
+              {
+                type: 'string',
+                name: 'rG'
+              },
+              {
+                type: 'string',
+                name: 'pubkey'
+              }
+            ]
+          }, [depositData!.rG, depositData!.pubkey])
+        });
+        console.log('result', result);
+      }
+    } catch (error) {
+      console.error('Error while submitting deposit:', error);
     }
   };
 

@@ -14,14 +14,18 @@ const handleSnapConnect = async () => {
 
   if (provider && isFlask) {
 
-    // call zer0x-deposit-payload
-    const payload = await window.ethereum.request({
-      "method": "wallet_requestSnaps",
-      "params": {
-        "npm:cypher-zer0x": {},
-      }
-    });
-    alert('MetaMask Flask & Cypher Zer0x SNAP successfully detected!');
+    try {
+      // call zer0x-deposit-payload
+      const payload = await window.ethereum.request({
+        "method": "wallet_requestSnaps",
+        "params": {
+          "npm:cypher-zer0x": {},
+        }
+      });
+      alert('MetaMask Flask & Cypher Zer0x SNAP successfully detected!');
+    } catch (error) {
+      console.error('Error while installing Cypher Zer0x SNAP');
+    }
   } else {
     alert('Please install MetaMask flask first');
   }
